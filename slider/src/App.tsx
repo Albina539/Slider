@@ -1,13 +1,10 @@
 import "./App.css";
-import Header from "./components/custom/Header";
 import Hero from "./components/custom/Hero";
 
 function App() {
   return (
-    <div>
-      <Header></Header>
+    <div className="bg-black">
       <Hero></Hero>
-      <h1>Hello world</h1>
     </div>
   );
 }
