@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Plus, FileText, Calendar, Clock, Send, Sparkles } from 'lucide-react';
-import { Header } from '@/components/layout/Header';
-import { Footer } from '@/components/layout/Footer';
+import Header from '@/components/custom/Header';
+//import { Footer } from '@/components/custom/Hero';
 
 const mockProjects = [
   { id: 1, title: 'AI Agent', slides: 5, createdAt: '2 дня назад' },
@@ -124,6 +124,55 @@ const WorkspacePage = () => {
                 transform: 'rotate(-180deg)', 
               }}
             />
+            <img 
+              src="/src/assets/sparkle.svg" 
+              alt="sparkle"
+              className="absolute"
+              style={{
+                width: '24px',               
+                height: '24px',            
+                top: '120px',                   
+                left: '95%',                
+                transform: 'rotate(-180deg)', 
+              }}
+            />
+            <img 
+              src="/src/assets/sparkle.svg" 
+              alt="sparkle"
+              className="absolute"
+              style={{
+                width: '24px',               
+                height: '24px',            
+                top: '120px',                   
+                left: '1%',                
+                transform: 'rotate(-180deg)', 
+              }}
+            /> 
+            <img 
+              src="/src/assets/sparkle.svg" 
+              alt="sparkle"
+              className="absolute"
+              style={{
+                width: '24px',               
+                height: '24px',            
+                top: '60px',                   
+                left: '80%',                
+                transform: 'rotate(-180deg)', 
+              }}
+            />   
+            <img 
+              src="/src/assets/sparkle.svg" 
+              alt="sparkle"
+              className="absolute"
+              style={{
+                width: '24px',               
+                height: '24px',            
+                top: '60px',                   
+                left: '16%',                
+                transform: 'rotate(-180deg)', 
+              }}
+            />         
+
           </div>
 
           <p 
@@ -228,17 +277,8 @@ const WorkspacePage = () => {
               }}
             >
               3-5 слайдов   
-              <img 
-              src="/src/assets/Frame 38.svg" 
-              alt="sparkle"
-              className="absolute"
-              style={{
-                width: '11px',               
-                height: '24px',       
-                top: '10px',                   
-                left: '85%',                 
-              }}
-            />
+              
+
             </div>
            </div> 
         </section>
@@ -246,55 +286,65 @@ const WorkspacePage = () => {
         {/* Раздел "Мои проекты" */}
         <section>
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-2xl font-semibold text-white">Мои проекты</h2>
-            <Button 
-              variant="outline" 
-              size="sm"
-              onClick={() => navigate('/generate')}
-              className="text-green-400 border-green-400 hover:bg-green-400 hover:text-black transition-colors"
+            <div 
+              className="flex items-center justify-center px-4 py-2"
+              style={{
+                backgroundColor: 'hsla(124, 100%, 59%, 1)', 
+                minWidth: '200px',
+                height: '48px',
+              }}
             >
-              <Plus className="mr-1 h-4 w-4" />
-              Новый проект
-            </Button>
+              <h2 
+                className="text-xl font-semibold"
+                style={{
+                  color: '#000', // ← чёрный текст
+                  fontFamily: '"Pixel Font7", monospace',
+                }}
+              >
+                Мои проекты
+              </h2>
+            </div>
           </div>
 
-          {mockProjects.length === 0 ? (
-            <Card className="bg-gray-900 border-gray-700">
-              <CardContent className="py-12 text-center">
-                <p className="text-gray-400">У вас пока нет проектов</p>
-                <Button onClick={() => navigate('/generate')} className="mt-4 bg-green-500 hover:bg-green-400 text-black">
-                  Создать первый проект
-                </Button>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {mockProjects.map((project) => (
+            <Card key={project.id} className="bg-white border-gray-200 hover:shadow-lg transition-all cursor-pointer">
+              <CardContent className="p-4">
+                {/* Превью */}
+                <div className="relative w-full h-32 bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg mb-3">
+                  <img 
+                    src="/src/assets/file-text-sharp.svg" 
+                    alt="folder"
+                    className="absolute top-2 left-2"
+                    style={{
+                      width: '112px',
+                      height: '112px',
+                    }}
+                  />
+                </div>
+          
+                {/* Название */}
+                <h3 className="font-semibold text-lg text-gray-900">{project.title}</h3>
+          
+                {/* Информация */}
+                <div className="flex items-center gap-4 text-sm text-gray-500 mt-1">
+                  <span className="flex items-center gap-1">
+                    <Clock className="h-3 w-3" />
+                    {project.slides} слайдов
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <Calendar className="h-3 w-3" />
+                    {project.createdAt}
+                  </span>
+                </div>
               </CardContent>
             </Card>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {mockProjects.map((project) => (
-                <Card key={project.id} className="bg-gray-900 border-gray-700 hover:border-green-500 transition-colors cursor-pointer">
-                  <CardContent className="p-4">
-                    <div className="aspect-video bg-gradient-to-br from-gray-800 to-gray-700 rounded-lg mb-3 flex items-center justify-center">
-                      <FileText className="h-8 w-8 text-green-400" />
-                    </div>
-                    <h3 className="font-semibold text-lg text-white">{project.title}</h3>
-                    <div className="flex items-center gap-4 text-sm text-gray-400 mt-1">
-                      <span className="flex items-center gap-1">
-                        <Clock className="h-3 w-3" />
-                        {project.slides} слайдов
-                      </span>
-                      <span className="flex items-center gap-1">
-                        <Calendar className="h-3 w-3" />
-                        {project.createdAt}
-                      </span>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          )}
+          ))}
+        </div>
         </section>
       </main>
 
-      <Footer />
+
     </div>
   );
 };

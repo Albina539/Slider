@@ -5,6 +5,7 @@
 @import url("https://fonts.cdnfonts.com/css/pixel-font7");
 @import url("https://myfonts.ru/myfonts?fonts=advanced-pixel-7");
 
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
@@ -132,4 +133,15 @@
   html {
     @apply font-sans;
   }
+}
+@font-face {
+  font-family: 'Pixel Font7';
+  src: url('./assets/pixelfont_7.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* Применение ко всему сайту */
+* {
+  font-family: 'Pixel Font7', sans-serif;
 }
