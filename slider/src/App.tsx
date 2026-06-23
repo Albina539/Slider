@@ -1,17 +1,14 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import "./App.css";
 import starsBg from "../src/assets/stars-bg2.svg";
 import cloudBg from "../src/assets/cloud-down.svg";
 import Hero from "./components/custom/Hero";
 import { ArrowBigUp } from "pixelarticons/react";
 import GideSection from "./components/custom/GideSection";
-import WorkspacePage from "./pages/WorkspacePage";
 
-// Компонент лендинга (главная страница)
-const LandingPage = () => {
+function App() {
   return (
     <div className="h-full min-h-screen w-full bg-black">
-      <Hero />
+      <Hero></Hero>
       <GideSection />
       <div className="md:mb-10 mb-5 flex justify-center">
         <img src={starsBg} alt="stars-bg" width={1100} />
@@ -41,18 +38,6 @@ const LandingPage = () => {
         </div>
       </div>
     </div>
-  );
-};
-
-// Главный компонент с маршрутизацией
-function App() {
-  return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/workspace" element={<WorkspacePage />} />
-      </Routes>
-    </BrowserRouter>
   );
 }
 
