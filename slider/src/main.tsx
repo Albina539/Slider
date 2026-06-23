@@ -3,7 +3,7 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App.tsx";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Workspace from "./pages/Workspace.tsx";
+import WorkspacePage from "./pages/WorkspacePage.tsx";
 import Project from "./pages/Project.tsx";
 import { ClerkProvider } from "@clerk/clerk-react";
 
@@ -11,7 +11,7 @@ const router = createBrowserRouter([
   { path: "/", element: <App /> },
   {
     path: "/workspace",
-    element: <Workspace />,
+    element: <WorkspacePage />,
     children: [{ path: "project/:projectId", element: <Project /> }],
   },
 ]);
