@@ -1,5 +1,5 @@
 import stars from "../../assets/background-stars.svg";
-import { ArrowBigUpDash } from "pixelarticons/react";
+import { ArrowBigUpDash, Loader } from "pixelarticons/react";
 import {
   InputGroup,
   InputGroupAddon,
@@ -15,8 +15,23 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
+import { useState } from "react";
+import { v4 as uuid4 } from "uuid";
+import { useNavigate } from "react-router-dom";
 
 const PromptBox = () => {
+  const [text, setText] = useState<string>("");
+  const [slides, setSlides] = useState<string>("4 to 6");
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
+  const createAndSaveProject = () => {
+    const projectId = uuid4();
+    setLoading(true);
+    console.log(projectId, slides);
+    setLoading(false);
+    navigate("/workspace/project/" + projectId + "/outline");
+  };
   return (
     <div className="flex flex-col items-center justify-center text-center mb-12 md:my-25 my-15">
       <div className="relative w-full md:mb-30 mb-15">
@@ -44,9 +59,10 @@ const PromptBox = () => {
           <InputGroupTextarea
             placeholder="Здесь мог быть твой текст..."
             className="text-black min-h-40"
+            onChange={(e) => setText(e.target.value)}
           />
           <InputGroupAddon align={"block-end"}>
-            <Select>
+            <Select onValueChange={(value) => setSlides(value)}>
               <SelectTrigger className="w-50">
                 <SelectValue placeholder="Слайды не выбраны" />
               </SelectTrigger>
@@ -59,8 +75,19 @@ const PromptBox = () => {
                 </SelectGroup>
               </SelectContent>
             </Select>
-            <InputGroupButton className="ml-auto bg-[#6900BF] text-white h-12 w-12">
-              <ArrowBigUpDash style={{ width: "32px", height: "32px" }} />
+            <InputGroupButton
+              className="ml-auto bg-[#6900BF] text-white h-12 w-12"
+              onClick={() => createAndSaveProject()}
+              disabled={!text}
+            >
+              {loading ? (
+                <Loader
+                  className="animate-spin"
+                  style={{ width: "32px", height: "32px" }}
+                />
+              ) : (
+                <ArrowBigUpDash style={{ width: "32px", height: "32px" }} />
+              )}
             </InputGroupButton>
           </InputGroupAddon>
         </InputGroup>
