@@ -2,8 +2,6 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 @import "@fontsource-variable/inter";
-@import url("https://fonts.cdnfonts.com/css/pixel-font7");
-@import url("https://myfonts.ru/myfonts?fonts=advanced-pixel-7");
 
 @custom-variant dark (&:is(.dark *));
 
@@ -136,4 +134,18 @@
   html {
     @apply font-sans;
   }
+}
+
+@font-face {
+  font-family: "Pixel Font7";
+  font-style: normal;
+  font-weight: 250;
+  src: url("assets/fonts/pixel_font-7.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Advanced Pixel-7";
+  font-style: normal;
+  font-weight: 400;
+  src: url("assets/fonts/advanced_pixel-7.ttf") format("truetype");
 }
