@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React from "react";
 import {
   Select,
   SelectContent,
@@ -9,10 +9,15 @@ import {
   SelectValue,
 } from "../ui/select";
 import stars from "../../assets/background-stars.svg";
+import type { FontStyleType } from "../../types";
+import { FONTS } from "../../constants";
 
-const FontStyle = () => {
-  const [font, setFont] = useState<string>("TimesNewRoman");
-  console.log(font);
+interface FontStyleProps {
+  font: string;
+  setFont: React.Dispatch<React.SetStateAction<FontStyleType>>;
+}
+
+const FontStyle: React.FC<FontStyleProps> = ({ font, setFont }) => {
   return (
     <section>
       <div className="flex items-center gap-6 mb-15">
@@ -32,17 +37,23 @@ const FontStyle = () => {
           width={1000}
         />
         <div className="flex justify-center items-center relative z-10">
-          <Select onValueChange={(value) => setFont(value)}>
+          <Select
+            value={font}
+            onValueChange={(value) => setFont(value as FontStyleType)}
+          >
             <SelectTrigger className="w-100 bg-white md:h-15! md:text-xl">
               <SelectValue placeholder="Шрифт не выбран" />
             </SelectTrigger>
             <SelectContent className=" bg-white">
               <SelectGroup>
                 <SelectLabel>Стиль шрифта</SelectLabel>
-                <SelectItem value="TimesNewRoman">TimesNewRoman</SelectItem>
-                <SelectItem value="Arial">Arial</SelectItem>
-                <SelectItem value="Roboto">Roboto</SelectItem>
-                <SelectItem value="Calibri">Calibri</SelectItem>
+                {FONTS.map((font) => {
+                  return (
+                    <SelectItem value={font} key={font}>
+                      {font}
+                    </SelectItem>
+                  );
+                })}
               </SelectGroup>
             </SelectContent>
           </Select>

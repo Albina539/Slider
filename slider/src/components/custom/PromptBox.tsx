@@ -43,7 +43,7 @@ const PromptBox = () => {
         />
         <div className="flex flex-col items-center relative z-10">
           <h1
-            className="text-[#2EFF3C] md:text-5xl text-3xl max-sm:text-2xl text-center"
+            className="text-slider-green md:text-5xl text-3xl max-sm:text-2xl text-center"
             id="gide"
           >
             Вставь свой текст, а Slider начнет играть
@@ -76,7 +76,7 @@ const PromptBox = () => {
               </SelectContent>
             </Select>
             <InputGroupButton
-              className="ml-auto bg-[#6900BF] text-white h-12 w-12"
+              className="ml-auto bg-slider-dark text-white h-12 w-12"
               onClick={() => createAndSaveProject()}
               disabled={!text}
             >
