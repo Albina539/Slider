@@ -19,7 +19,7 @@ const Hero = () => {
         />
         <div className="flex flex-col items-center pt-25">
           <img src={logo} alt="logo" className="md:w-25 w-15" />
-          <h1 className="text-6xl font-medium text-[#2EFF3C]">Slider</h1>
+          <h1 className="text-6xl font-medium text-slider-green">Slider</h1>
           <p className="text-white text-4xl font-var2">
             Play with ideas. Create design
           </p>

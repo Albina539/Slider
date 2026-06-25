@@ -2,8 +2,6 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 @import "@fontsource-variable/inter";
-@import url("https://fonts.cdnfonts.com/css/pixel-font7");
-@import url("https://myfonts.ru/myfonts?fonts=advanced-pixel-7");
 
 @custom-variant dark (&:is(.dark *));
 
@@ -49,6 +47,12 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
+
+  --color-slider-green: #2eff3c;
+  --color-slider-dark: #6900bf;
+  --color-slider-light: #fea7ff;
+  --color-slider-violet: #9523be;
+  --color-slider-blue: #250a5b;
 }
 
 :root {
@@ -84,8 +88,6 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
-
-  --green-color: #2eff3c;
 }
 
 .dark {
@@ -132,4 +134,18 @@
   html {
     @apply font-sans;
   }
+}
+
+@font-face {
+  font-family: "Pixel Font7";
+  font-style: normal;
+  font-weight: 250;
+  src: url("assets/fonts/pixel_font-7.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Advanced Pixel-7";
+  font-style: normal;
+  font-weight: 400;
+  src: url("assets/fonts/advanced_pixel-7.ttf") format("truetype");
 }

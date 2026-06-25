@@ -11,7 +11,7 @@ const MyProjects = () => {
   return (
     <section className="max-md:mt-20">
       <div className="flex items-center justify-between mb-12">
-        <div className="flex items-center justify-center text-black bg-[#2eff3c] md:px-8 md:py-3 px-6 py-2 md:text-3xl text-xl w-fit h-fit text-center">
+        <div className="flex items-center justify-center text-black bg-slider-green md:px-8 md:py-3 px-6 py-2 md:text-3xl text-xl w-fit h-fit text-center">
           <h2 className="md:text-3xl text-2xl font-medium text-black">
             Мои проекты
           </h2>
@@ -28,7 +28,7 @@ const MyProjects = () => {
               <h3 className="font-semibold text-2xl text-black">
                 {project.title}
               </h3>
-              <div className="flex flex-col text-xl text-[#6900BF] font-var2">
+              <div className="flex flex-col text-xl text-slider-dark font-var2">
                 <div className="flex items-center gap-1">
                   <Clock className="h-3 w-3" />
                   <span>{project.slides} слайдов</span>

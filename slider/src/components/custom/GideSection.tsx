@@ -14,7 +14,7 @@ const GideSection = () => {
           />
           <div className="flex flex-col items-center relative z-10">
             <h2
-              className="text-[#2EFF3C] md:text-6xl text-4xl max-sm:text-2xl text-center"
+              className="text-slider-green md:text-6xl text-4xl max-sm:text-2xl text-center"
               id="gide"
             >
               Как использовать Slider?
