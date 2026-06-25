@@ -26,7 +26,7 @@ if (!PUBLISHABLE_KEY) {
   throw new Error("Missing Publishable key");
 }
 
-function Root() {
+export function Root() {
   const [userDetail, setUserDetail] = useState();
   return (
     <ClerkProvider publishableKey={PUBLISHABLE_KEY}>

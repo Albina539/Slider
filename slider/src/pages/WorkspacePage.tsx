@@ -17,43 +17,44 @@ const WorkspacePage = () => {
   const location = useLocation();
 
   useEffect(() => {
-    user && CreateNewUser();
-  }, [user]);
-
-  const CreateNewUser = async () => {
-    if (user) {
-      // Если пользователь уже существует
-      const docRef = doc(
-        firebaseDb,
-        "users",
-        user?.primaryEmailAddress?.emailAddress ?? "",
-      );
-      const docSnap = await getDoc(docRef);
-
-      if (docSnap.exists()) {
-        console.log("Document data:", docSnap.data());
-        setUserDetail(docSnap.data());
-      } else {
-        const data = {
-          fullName: user?.fullName,
-          email: user?.primaryEmailAddress?.emailAddress,
-          createdAt: new Date(),
-        };
-        //Новый пользователь
-        await setDoc(
-          doc(
-            firebaseDb,
-            "users",
-            user.primaryEmailAddress?.emailAddress ?? "",
-          ),
-          {
-            ...data,
-          },
+    const CreateNewUser = async () => {
+      if (user) {
+        // Если пользователь уже существует
+        const docRef = doc(
+          firebaseDb,
+          "users",
+          user?.primaryEmailAddress?.emailAddress ?? "",
         );
-        setUserDetail(data);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+          console.log("Document data:", docSnap.data());
+          setUserDetail(docSnap.data());
+        } else {
+          const data = {
+            fullName: user?.fullName,
+            email: user?.primaryEmailAddress?.emailAddress,
+            createdAt: new Date(),
+          };
+          //Новый пользователь
+          await setDoc(
+            doc(
+              firebaseDb,
+              "users",
+              user.primaryEmailAddress?.emailAddress ?? "",
+            ),
+            {
+              ...data,
+            },
+          );
+          setUserDetail(data);
+        }
       }
+    };
+    if (user) {
+      CreateNewUser();
     }
-  };
+  }, [user, setUserDetail]);
 
   if (!user && isLoaded) {
     return (
