@@ -1,43 +1,34 @@
-import "./App.css";
-import starsBg from "../src/assets/stars-bg2.svg";
-import cloudBg from "../src/assets/cloud-down.svg";
-import Hero from "./components/custom/Hero";
-import { ArrowBigUp } from "pixelarticons/react";
-import GideSection from "./components/custom/GideSection";
+// App.tsx
+import { Suspense, useState } from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import WorkspacePage from "./pages/WorkspacePage";
+import ProjectOutline from "./pages/ProjectOutline";
+import { UserDetailContext } from "../context/UserDetailContext";
+import MainPage from "./pages/MainPage";
+import SignUp from "./components/custom/auth/SignUp";
+import SignIn from "./components/custom/auth/SignIn";
 
 function App() {
+  const [userDetail, setUserDetail] = useState(null);
+
   return (
-    <div className="h-full min-h-screen w-full bg-black">
-      <Hero></Hero>
-      <GideSection />
-      <div className="md:mb-10 mb-5 flex justify-center">
-        <img src={starsBg} alt="stars-bg" width={1100} />
-      </div>
-      <div className="flex justify-center items-centers flex-col relative">
-        <div className="absolute inset-0 w-full">
-          <img
-            src={cloudBg}
-            alt="Cloud background"
-            className="w-full md:h-full h-95 object-cover overflow-visible"
-          />
-        </div>
-        <div className="flex items-center justify-center pt-50 relative z-10 md:h-120 h-90">
-          <a href="#">
-            <div className="flex gap-10 justify-center items-center">
-              <ArrowBigUp
-                style={{ width: "96px", height: "96px" }}
-                className="text-white"
+    <Suspense fallback={<div>Загрузка...</div>}>
+      <BrowserRouter>
+        <UserDetailContext.Provider value={{ userDetail, setUserDetail }}>
+          <Routes>
+            <Route path="/" element={<MainPage />} />
+            <Route path="/register" element={<SignUp />} />
+            <Route path="/login" element={<SignIn />} />
+            <Route path="/workspace" element={<WorkspacePage />}>
+              <Route
+                path="project/:projectId/outline"
+                element={<ProjectOutline />}
               />
-              <h2 className="text-white md:text-7xl text-4xl">Вверх</h2>
-              <ArrowBigUp
-                style={{ width: "96px", height: "96px" }}
-                className="text-white"
-              />
-            </div>
-          </a>
-        </div>
-      </div>
-    </div>
+            </Route>
+          </Routes>
+        </UserDetailContext.Provider>
+      </BrowserRouter>
+    </Suspense>
   );
 }
 

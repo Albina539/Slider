@@ -1,9 +1,9 @@
-import { UserButton, useUser } from "@clerk/clerk-react";
+// import { UserButton, useUser } from "@clerk/clerk-react";
 import logo from "../../assets/logo.svg";
 import { Link } from "react-router-dom";
 
 const Header = () => {
-  const { user } = useUser();
+  // const { user } = useUser();
   return (
     <div className="py-4 px-6 flex justify-between items-center bg-[#11002F]">
       <Link to="/">
@@ -13,7 +13,7 @@ const Header = () => {
         </div>
       </Link>
 
-      {user ? <UserButton /> : <></>}
+      {/* {user ? <UserButton /> : <></>} */}
     </div>
   );
 };

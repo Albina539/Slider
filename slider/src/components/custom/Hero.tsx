@@ -2,12 +2,40 @@ import { ChevronRight2 } from "pixelarticons/react";
 import logo from "../../assets/logo.svg";
 import cloud from "../../assets/cloud-bg.svg";
 import { Button } from "../ui/button";
-import { SignInButton, SignOutButton, useUser } from "@clerk/clerk-react";
 import { Link } from "react-router-dom";
 import stars from "../../assets/background-stars.svg";
+import { useEffect, useState } from "react";
+import { onAuthStateChanged, signOut } from "firebase/auth";
+import { auth } from "../../../config/FirebaseConfig";
 
 const Hero = () => {
-  const { user } = useUser();
+  const [user, setUser] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+      setLoading(false);
+    });
+    return unsubscribe;
+  }, []);
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+    } catch (error) {
+      console.error("Ошибка при входе: ", error);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="h-full min-h-screen w-full bg-black flex items-center justify-center">
+        <p className="text-white">Загрузка...</p>
+      </div>
+    );
+  }
+
   return (
     <div className="h-full min-h-screen w-full bg-black">
       <div className="relative w-full md:mb-15 mb-10">
@@ -28,11 +56,7 @@ const Hero = () => {
       <div className="overflow-hidden">
         <div className="flex flex-col text-white justify-center md:gap-3 gap-1 items-center md:mb-30 mb-23">
           {!user ? (
-            <SignInButton
-              mode="modal"
-              fallbackRedirectUrl="/workspace"
-              forceRedirectUrl="/workspace"
-            >
+            <Link to="/login">
               <Button
                 className="flex md:gap-4 gap-2 md:text-4xl text-2xl items-center group justify-start md:w-70 w-55"
                 variant="ghost"
@@ -43,7 +67,7 @@ const Hero = () => {
                 />
                 <span>Начать</span>
               </Button>
-            </SignInButton>
+            </Link>
           ) : (
             <Link to="/workspace" className="w-fit">
               <Button
@@ -69,21 +93,18 @@ const Hero = () => {
             />
             <span>Гайд</span>
           </a>
-          {user ? (
-            <SignOutButton>
-              <Button
-                className="flex md:gap-4 gap-2 md:text-4xl text-2xl items-center group justify-start md:w-70 w-55"
-                variant="ghost"
-              >
-                <ChevronRight2
-                  className="text-black group-hover:text-white"
-                  style={{ width: "48px", height: "48px" }}
-                />
-                <span>Выйти</span>
-              </Button>
-            </SignOutButton>
-          ) : (
-            <></>
+          {user && (
+            <Button
+              onClick={handleLogout}
+              className="flex md:gap-4 gap-2 md:text-4xl text-2xl items-center group justify-start md:w-70 w-55"
+              variant="ghost"
+            >
+              <ChevronRight2
+                className="text-black group-hover:text-white"
+                style={{ width: "48px", height: "48px" }}
+              />
+              <span>Выйти</span>
+            </Button>
           )}
         </div>
       </div>
