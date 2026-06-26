@@ -8,6 +8,7 @@ import { ClerkProvider } from "@clerk/clerk-react";
 import { UserDetailContext } from "./../context/UserDetailContext.tsx";
 import { useState } from "react";
 import ProjectOutline from "./pages/ProjectOutline.tsx";
+import Project from "./pages/Project";
 
 const router = createBrowserRouter([
   { path: "/", element: <App /> },
@@ -18,6 +19,10 @@ const router = createBrowserRouter([
       { path: "project/:projectId/outline", element: <ProjectOutline /> },
     ],
   },
+  {
+    path: "/project",
+    element: <Project />,
+  }
 ]);
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
