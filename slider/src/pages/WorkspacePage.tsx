@@ -3,28 +3,32 @@
 import Header from "../components/custom/Header";
 import PromptBox from "../components/custom/PromptBox";
 import MyProjects from "../components/custom/MyProjects";
-import { firebaseDb } from "./../../config/FirebaseConfig";
-import { useUser } from "@clerk/clerk-react";
+import { auth, firebaseDb } from "./../../config/FirebaseConfig";
 import { doc, getDoc, setDoc } from "firebase/firestore";
-import { useEffect, useContext } from "react";
+import { useEffect, useContext, useState } from "react";
 import { UserDetailContext } from "./../../context/UserDetailContext";
 import { Outlet, useLocation } from "react-router-dom";
+import { onAuthStateChanged } from "firebase/auth";
 
 const WorkspacePage = () => {
-  const { user, isLoaded } = useUser();
-
+  const [user, setUser] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
   const { userDetail, setUserDetail } = useContext(UserDetailContext);
   const location = useLocation();
 
   useEffect(() => {
-    const CreateNewUser = async () => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+      setLoading(false);
+    });
+    return unsubscribe;
+  }, []);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
       if (user) {
         // Если пользователь уже существует
-        const docRef = doc(
-          firebaseDb,
-          "users",
-          user?.primaryEmailAddress?.emailAddress ?? "",
-        );
+        const docRef = doc(firebaseDb, "users", user.uid);
         const docSnap = await getDoc(docRef);
 
         if (docSnap.exists()) {
@@ -32,31 +36,30 @@ const WorkspacePage = () => {
           setUserDetail(docSnap.data());
         } else {
           const data = {
-            fullName: user?.fullName,
-            email: user?.primaryEmailAddress?.emailAddress,
+            uid: user.uid,
+            fullName: user.displayName || user.email?.split("@")[0],
+            email: user?.email,
             createdAt: new Date(),
           };
           //Новый пользователь
-          await setDoc(
-            doc(
-              firebaseDb,
-              "users",
-              user.primaryEmailAddress?.emailAddress ?? "",
-            ),
-            {
-              ...data,
-            },
-          );
+          await setDoc(doc(firebaseDb, "users", user.uid), data);
           setUserDetail(data);
         }
       }
     };
-    if (user) {
-      CreateNewUser();
-    }
+
+    fetchUserData();
   }, [user, setUserDetail]);
 
-  if (!user && isLoaded) {
+  if (loading) {
+    return (
+      <div>
+        <p>Загрузка...</p>
+      </div>
+    );
+  }
+
+  if (!user) {
     return (
       <div>
         <p>Пожалуйста зарегистрируйся</p>
