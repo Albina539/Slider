@@ -8,7 +8,7 @@ import MainPage from "./pages/MainPage";
 import SignUp from "./components/custom/auth/SignUp";
 import SignIn from "./components/custom/auth/SignIn";
 import Project from "./pages/Project";
-
+import Pitch from './pages/Pitch';
 function App() {
   const [userDetail, setUserDetail] = useState(null);
 
@@ -27,6 +27,7 @@ function App() {
               />
             </Route>
             <Route path="/project" element={<Project />} />
+            <Route path="/pitch" element={<Pitch />} />
           </Routes>
         </UserDetailContext.Provider>
       </BrowserRouter>
