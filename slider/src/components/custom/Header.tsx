@@ -1,9 +1,19 @@
-// import { UserButton, useUser } from "@clerk/clerk-react";
+import { useEffect, useState } from "react";
 import logo from "../../assets/logo.svg";
 import { Link } from "react-router-dom";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "../../../config/FirebaseConfig";
+import Avatar from "./Avatar";
 
 const Header = () => {
-  // const { user } = useUser();
+  const [user, setUser] = useState<any>(null);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+    });
+    return unsubscribe;
+  }, []);
   return (
     <div className="py-4 px-6 flex justify-between items-center bg-[#11002F]">
       <Link to="/">
@@ -13,7 +23,7 @@ const Header = () => {
         </div>
       </Link>
 
-      {/* {user ? <UserButton /> : <></>} */}
+      <Avatar user={user} />
     </div>
   );
 };
