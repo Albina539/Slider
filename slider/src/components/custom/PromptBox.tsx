@@ -15,20 +15,39 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { v4 as uuid4 } from "uuid";
 import { useNavigate } from "react-router-dom";
+import { doc, setDoc } from "firebase/firestore";
+import { firebaseDb } from "./../../../config/FirebaseConfig";
+import { auth } from "./../../../config/FirebaseConfig"
+import { onAuthStateChanged } from "firebase/auth";
 
 const PromptBox = () => {
   const [text, setText] = useState<string>("");
   const [slides, setSlides] = useState<string>("4 to 6");
+  const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const createAndSaveProject = () => {
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+    });
+    return () => unsubscribe();
+  }, []);
+
+  const createAndSaveProject = async() => {
     const projectId = uuid4();
     setLoading(true);
-    console.log(projectId, slides);
+    await setDoc(doc(firebaseDb, 'projects', projectId), {
+        projectId: projectId,
+        userInputPrompt: text,
+        userSlides: slides,
+        createdBy: user?.displayName || user?.email || "Anonymous",
+        createdAt: new Date()
+    })
+    console.log("Проект успешно сохранен!")
     setLoading(false);
     navigate("/workspace/project/" + projectId + "/outline");
   };
