@@ -14,6 +14,7 @@ import FontStyle from "../components/custom/FontStyle";
 import FormFooter from "../components/custom/FormFooter";
 import SlidersStyle from "../components/custom/SlidersStyle";
 import type { FontStyleType, SlidersStyleType } from "../types";
+import { useNavigate } from "react-router-dom";
 
 const ProjectOutline = () => {
   // const { projectId } = useParams();
@@ -25,9 +26,11 @@ const ProjectOutline = () => {
   const [colorPrimary, setColorPrimary] = useState<string>("");
   const [colorSecondary, setColorSecondary] = useState<string>("");
   const [font, setFont] = useState<FontStyleType>("TimesNewRoman");
+  const navigate = useNavigate();
 
   const GenerateSlides = () => {
     console.log(style, colorPrimary, colorSecondary, font);
+    navigate("/project");
   };
   return (
     <div className="min-h-screen flex flex-col bg-black">

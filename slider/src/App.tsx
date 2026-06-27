@@ -7,6 +7,7 @@ import { UserDetailContext } from "../context/UserDetailContext";
 import MainPage from "./pages/MainPage";
 import SignUp from "./components/custom/auth/SignUp";
 import SignIn from "./components/custom/auth/SignIn";
+import Project from "./pages/Project";
 
 function App() {
   const [userDetail, setUserDetail] = useState(null);
@@ -25,6 +26,7 @@ function App() {
                 element={<ProjectOutline />}
               />
             </Route>
+            <Route path="/project" element={<Project />} />
           </Routes>
         </UserDetailContext.Provider>
       </BrowserRouter>
