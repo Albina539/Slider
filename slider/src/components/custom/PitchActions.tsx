@@ -1,19 +1,16 @@
-import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Download } from "pixelarticons/react";
+import { ArrowLeft } from "pixelarticons/react";
+import { Link } from "react-router-dom";
 
 const PitchActions = () => {
-  const navigate = useNavigate();
-
   return (
     <div className="w-full max-w-4xl mx-auto mt-8 flex justify-end">
-        <button
-          onClick={() => navigate("/project")}
-          className="flex items-center gap-2 px-6 py-3 rounded-lg text-black font-medium text-sm hover:opacity-80 transition-opacity"
-          style={{ backgroundColor: "hsla(124, 100%, 59%, 1)" }}
+      <Link
+        to="/project"
+        className="flex items-center justify-between gap-3 lg:px-5 md:px-4 px-3 py-4 bg-slider-green text-black font-medium lg:text-2xl md:text-xl text-lg h-12 transition-all hover:scale-105"
       >
-        <ArrowLeft className="w-5 h-5" />
-        Назад
-      </button>
+        <ArrowLeft style={{ width: "36px", height: "36px" }} />
+        <span>Назад</span>
+      </Link>
     </div>
   );
 };

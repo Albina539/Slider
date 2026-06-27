@@ -1,17 +1,11 @@
-import { useState } from "react";
 import stars from "../../assets/background-stars.svg";
 import PitchActions from "./PitchActions";
 import logo from "../../assets/logo.svg";
+import { Textarea } from "../ui/textarea";
 
 const PitchContent = () => {
-  // Состояние для текста выступления 
-  const [speechText, setSpeechText] = useState(`
-    Введите текст для вашего выступления...
-  `);
-
   return (
     <div className="flex flex-col items-center justify-center text-center mb-12 md:my-25 my-15">
-      {/* Звёзды + логотип + заголовки */}
       <div className="relative w-full md:mb-30 mb-15">
         <img
           src={stars}
@@ -31,15 +25,13 @@ const PitchContent = () => {
       </div>
 
       <div className="w-full max-w-4xl mx-auto">
-        <textarea
-          className="w-full min-h-[300px] bg-white rounded-lg p-6 md:p-8 text-black text-base md:text-lg leading-relaxed resize-y focus:outline-none focus:ring-2 focus:ring-[#2EFF3C] transition"
-          value={speechText}
-          onChange={(e) => setSpeechText(e.target.value)}
-          placeholder="Введите текст для вашего выступления..."
+        <Textarea
+          className="w-full min-h-75 bg-white p-6 md:p-8 text-black text-base md:text-lg leading-relaxed resize-none focus:outline-none! focus:ring-2! focus:ring-slider-green!"
+          placeholder="Текст для вашего выступления..."
+          readOnly
         />
       </div>
 
-      {/* Кнопки */}
       <PitchActions />
     </div>
   );

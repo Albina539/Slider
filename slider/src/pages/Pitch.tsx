@@ -1,5 +1,4 @@
 import Header from "../components/custom/Header";
-import Footer from "../components/custom/Footer";
 import PitchContent from "../components/custom/PitchContent";
 
 const Pitch = () => {
@@ -9,7 +8,6 @@ const Pitch = () => {
       <main className="flex-1 w-full mx-auto md:px-25 px-8 py-8 flex flex-col">
         <PitchContent />
       </main>
-      <Footer />
     </div>
   );
 };
