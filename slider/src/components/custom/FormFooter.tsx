@@ -1,12 +1,14 @@
 import type React from "react";
 import mascot from "../../assets/logo.svg";
 import { Button } from "../ui/button";
+import { Link, useParams } from "react-router-dom";
 
 interface FormFooterProps {
   onClick: () => void;
 }
 
 const FormFooter: React.FC<FormFooterProps> = ({ onClick }) => {
+  const { projectId } = useParams();
   return (
     <section className="flex flex-col items-center mb-20">
       <div className="flex justify-between items-center gap-6 max-md:flex-col mb-20 w-full">
@@ -27,13 +29,15 @@ const FormFooter: React.FC<FormFooterProps> = ({ onClick }) => {
           <img src={mascot} alt="mascot" className="md:w-10 lg:w-20 w-15" />
         </div>
       </div>
-      <Button
-        className="bg-slider-violet md:h-18 md:w-90 h-15 w-70 md:text-3xl text-2xl cursor-pointer"
-        onClick={onClick}
-        type="button"
-      >
-        Отправить Slider'у
-      </Button>
+      <Link to={`/workspace/project/${projectId}/finish`}>
+        <Button
+          className="bg-slider-violet md:h-18 md:w-90 h-15 w-70 md:text-3xl text-2xl cursor-pointer"
+          onClick={onClick}
+          type="button"
+        >
+          Отправить Slider'у
+        </Button>
+      </Link>
     </section>
   );
 };

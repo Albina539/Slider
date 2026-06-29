@@ -1,13 +1,22 @@
 import { Calendar, Clock } from "pixelarticons/react";
 import { CardContent, Card } from "../ui/card";
 import { FileText } from "pixelarticons/react";
+import { useNavigate } from "react-router-dom";
 
 const MyProjects = () => {
+
+  const navigate = useNavigate();
   const mockProjects = [
     { id: 1, title: "AI Agent", slides: 5, createdAt: "2 дня назад" },
     { id: 2, title: "AI Agent", slides: 5, createdAt: "2 дня назад" },
     { id: 3, title: "AI Agent", slides: 5, createdAt: "2 дня назад" },
   ];
+
+  const handleProjectClick = (projectId: string) => {
+    console.log('Navigating to project:', projectId);
+    navigate(`/project/${projectId}`);
+  };
+
   return (
     <section className="max-md:mt-20">
       <div className="flex items-center justify-between mb-12">
@@ -20,7 +29,8 @@ const MyProjects = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {mockProjects.map((project) => (
-          <Card key={project.id} className="bg-white cursor-pointer">
+          <Card key={project.id} className="bg-white cursor-pointer"
+          onClick={() => handleProjectClick(project.id)}>
             <CardContent className="px-4">
               <div className="mb-3 text-orange-500">
                 <FileText style={{ width: "56px", height: "56px" }} />
