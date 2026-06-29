@@ -12,18 +12,18 @@ import {
 } from "../ui/dialog";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
-import type { SlideContent } from "../../types";
+import type { Slide } from "../../types";
 
 interface EditDialogProps {
   children: React.ReactNode;
-  slideData: SlideContent;
-  onUpdate: (slideNo: string, value: Partial<SlideContent>) => void;
+  slideData: Slide;
+  onUpdate: (slideNo: number, value: Partial<Slide>) => void;
 }
 
 const EditDialog = ({ children, slideData, onUpdate }: EditDialogProps) => {
   const [localData, setLocalData] = useState(slideData);
   const [openDialog, setOpenDialog] = useState(false);
-  const handleChange = (field: keyof SlideContent, value: string) => {
+  const handleChange = (field: keyof Slide, value: string) => {
     setLocalData({ ...localData, [field]: value });
   };
 
@@ -34,25 +34,29 @@ const EditDialog = ({ children, slideData, onUpdate }: EditDialogProps) => {
   return (
     <Dialog open={openDialog} onOpenChange={setOpenDialog}>
       <DialogTrigger>{children}</DialogTrigger>
-      <DialogContent>
+      <DialogContent className="bg-slider-green">
         <DialogHeader>
-          <DialogTitle>Редактирование слайда</DialogTitle>
+          <DialogTitle className="text-2xl border-b border-black">
+            Редактирование слайда
+          </DialogTitle>
           <DialogDescription>
             <div>
               <div className="mb-4">
-                <label>Название</label>
+                <label className="text-xl text-black">Название</label>
                 <Input
+                  className="bg-white border-2 border-black text-black"
                   placeholder="Название слайда"
-                  value={localData.slidePoint}
-                  onChange={(e) => handleChange("slidePoint", e.target.value)}
+                  value={localData.slideTitle}
+                  onChange={(e) => handleChange("slideTitle", e.target.value)}
                 />
               </div>
               <div>
-                <label>Контент</label>
+                <label className="text-xl text-black">Контент</label>
                 <Textarea
+                  className="bg-white border-2 border-black text-black"
                   placeholder="Текст презентации"
-                  value={localData.outline}
-                  onChange={(e) => handleChange("outline", e.target.value)}
+                  value={localData.content}
+                  onChange={(e) => handleChange("content", e.target.value)}
                 />
               </div>
             </div>
@@ -60,9 +64,14 @@ const EditDialog = ({ children, slideData, onUpdate }: EditDialogProps) => {
         </DialogHeader>
         <DialogFooter>
           <DialogClose>
-            <Button>Назад</Button>
+            <Button className="cursor-pointer">Назад</Button>
           </DialogClose>
-          <Button onClick={handleUpdate}>Сохранить</Button>
+          <Button
+            className="bg-slider-dark cursor-pointer"
+            onClick={handleUpdate}
+          >
+            Сохранить
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

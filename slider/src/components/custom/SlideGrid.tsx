@@ -2,21 +2,23 @@ import { PenSquareSharp } from "pixelarticons/react";
 import { Button } from "../ui/button";
 import type React from "react";
 import EditDialog from "./EditDialog";
-import type { SlideContent } from "../../types";
+import type { Slide } from "../../types";
 
 interface SlideGridProps {
-  slides: SlideContent[];
-  onUpdateOutline: (slideNo: string, value: Partial<SlideContent>) => void;
+  slides: Slide[];
+  presentationTitle?: string;
+  onUpdateOutline: (slideNo: number, value: Partial<Slide>) => void;
 }
 
 const SlideGrid: React.FC<SlideGridProps> = ({
   slides = [],
+  presentationTitle,
   onUpdateOutline,
 }) => {
   return (
     <div className="flex flex-col gap-4 w-full">
       <h2 className="md:text-5xl text-3xl max-sm:text-2xl font-var2 text-white text-left">
-        Редактирование слайдов
+        {presentationTitle || "Редактирование слайдов"}
       </h2>
       {slides.map((slide) => (
         <div
@@ -32,10 +34,10 @@ const SlideGrid: React.FC<SlideGridProps> = ({
           <div className="flex justify-between items-start gap-3 w-full h-full">
             <div className="flex flex-col justify-between h-full flex-1 min-w-0 text-left">
               <span className="font-medium leading-none text-white md:text-5xl text-3xl max-sm:text-2xl font-var2">
-                {slide.slidePoint}
+                {slide.slideTitle}
               </span>
               <p className="text-sm md:text-base text-white/70 leading-tight mt-7">
-                {slide.outline}
+                {slide.content}
               </p>
             </div>
             <EditDialog slideData={slide} onUpdate={onUpdateOutline}>

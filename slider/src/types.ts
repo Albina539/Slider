@@ -18,8 +18,13 @@ export const SlidersStyleType = {
 export type SlidersStyleType =
   (typeof SlidersStyleType)[keyof typeof SlidersStyleType];
 
-export type SlideContent = {
-  slideNo: string;
-  slidePoint: string;
-  outline: string;
+export type Slide = {
+  slideNo: number;
+  slideTitle: string;
+  content: string;
+};
+
+export type Presentation = {
+  presentationTitle: string;
+  slides: Slide[];
 };

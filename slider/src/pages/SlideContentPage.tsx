@@ -3,15 +3,17 @@ import stars from "../assets/background-stars.svg";
 import { useEffect, useState } from "react";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { firebaseDb } from "../../config/FirebaseConfig";
-import type { SlideContent } from "../types";
 import { Skeleton } from "../components/ui/skeleton";
 import SlideGrid from "../components/custom/SlideGrid";
 import { Button } from "../components/ui/button";
 import { ArrowRight, Loader } from "pixelarticons/react";
+import type { Slide } from "../types";
+import mascot from "../assets/logo.svg";
 
 const SlideContentPage = () => {
   const { projectId } = useParams();
-  const [slides, setSlides] = useState<SlideContent[]>([]);
+  const [slides, setSlides] = useState<Slide[]>([]);
+  const [presentationTitle, setPresentationTitle] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [saving, setSaving] = useState(false);
@@ -37,6 +39,7 @@ const SlideContentPage = () => {
 
         if (data.content && data.content.length > 0) {
           setSlides(data.content);
+          setPresentationTitle(data.presentationTitle || "Презентация");
         } else {
           setError("Презентация не найдена");
         }
@@ -51,10 +54,7 @@ const SlideContentPage = () => {
     fetchProject();
   }, [projectId]);
 
-  const handleOnUpdateOutline = (
-    slideNo: string,
-    value: Partial<SlideContent>,
-  ) => {
+  const handleOnUpdateOutline = (slideNo: number, value: Partial<Slide>) => {
     setSlides((prev) =>
       prev.map((item) =>
         item.slideNo === slideNo ? { ...item, ...value } : item,
@@ -105,9 +105,13 @@ const SlideContentPage = () => {
             <h1 className="text-slider-green md:text-6xl text-4xl max-sm:text-2xl text-center">
               Текст слайдов
             </h1>
-            <p className="text-center leading-none md:text-5xl text-3xl max-sm:text-2xl font-var2 text-white">
-              Проверяй пока не поздно
-            </p>
+            <div className="flex gap-2 items-center">
+              <img src={mascot} alt="mascot" className="md:w-12 w-9" />
+              <p className="text-center leading-none md:text-5xl text-3xl max-sm:text-2xl font-var2 text-white">
+                Проверяй. Меняй. Сохраняй.
+              </p>
+              <img src={mascot} alt="mascot" className="md:w-12 w-9" />
+            </div>
           </div>
         </div>
         {loading ? (
@@ -119,16 +123,18 @@ const SlideContentPage = () => {
             </div>
           </div>
         ) : (
-          <div className="flex flex-col items-center gap-6">
+          <div className="flex flex-col items-center gap-18">
             <div className="w-full max-w-4xl mx-auto">
               <SlideGrid
                 slides={slides}
+                presentationTitle={presentationTitle}
                 onUpdateOutline={handleOnUpdateOutline}
               />
             </div>
 
             <Button
               type="button"
+              disabled={saving}
               onClick={handleSaveAndContinue}
               className="flex items-center lg:px-8 md:px-6 px-4 py-4 bg-slider-green text-black font-medium lg:text-2xl md:text-xl text-lg h-14 cursor-pointer"
             >

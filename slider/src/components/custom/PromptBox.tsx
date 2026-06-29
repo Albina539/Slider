@@ -22,9 +22,8 @@ import { doc, setDoc, updateDoc } from "firebase/firestore";
 import { firebaseDb, GeminiAIModel } from "./../../../config/FirebaseConfig";
 import { auth } from "./../../../config/FirebaseConfig";
 import { onAuthStateChanged } from "firebase/auth";
-
-const CONTENT_PROMPT =
-  'Generate a PowerPoint slide outline for the topic {userInput}. Create {userSlides} in total. Each slide should include a topic name and a 2-line descriptive outline that clearly explains what content the slide will cover. Include the following structure: The first slide should be a Welcome screen. The second slide should be an Agenda screen. The final screen should be a Thank you screen. Return the response only in JSON format, following this schema: [ { "slideNo": "", "slidePoint": "", "outline": ""}]';
+import { CONTENT_PROMPT } from "../../prompts";
+import type { Presentation } from "../../types";
 
 const PromptBox = () => {
   const [text, setText] = useState<string>("");
@@ -79,10 +78,11 @@ const PromptBox = () => {
       const docRef = doc(firebaseDb, "projects", projectId);
       await setDoc(docRef, projectData);
       console.log("Проект успешно сохранен!");
-      const content = await generateContent(text, slides);
+      const presentation: Presentation = await generateContent(text, slides);
 
       await updateDoc(docRef, {
-        content: content,
+        content: presentation.slides,
+        presentationTitle: presentation.presentationTitle,
       });
       navigate("/workspace/project/" + projectId + "/content");
     } catch (error) {
