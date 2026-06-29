@@ -4,21 +4,34 @@ import RightContent from "./RightContent";
 import ProjectActions from "./ProjectActions";
 import stars from "../../assets/background-stars.svg";
 import { Skeleton } from "../ui/skeleton";
+import { useEffect } from "react";
+
+type Slide = {
+  id?: number;
+  slideNo: number;
+  slidePoint: string;     // заголовок
+  content?: string;       // основной текст
+  text?: string;          // для совместимости со старым кодом
+  visualSuggestion?: string;
+  imageKeywords?: string;
+};
 
 type Props = {
   loading: boolean;
+  slides?: Slide[];       // ← получаем слайды из родителя
 };
 
-const ProjectContent = ({ loading }: Props) => {
-  const [slides] = useState([
-    { id: 1, title: "Введение", text: "Сгенерированный текст для слайда 1" },
-    {
-      id: 2,
-      title: "Основная часть",
-      text: "Сгенерированный текст для слайда 2",
-    },
-    { id: 3, title: "Заключение", text: "Сгенерированный текст для слайда 3" },
-  ]);
+const ProjectContent = ({ loading, slides: propSlides = [] }: Props) => {
+  // Локальное состояние + fallback на пропсы
+  const [slides, setSlides] = useState<Slide[]>(propSlides);
+
+  // Обновляем, когда приходят новые слайды из Project.tsx
+  useEffect(() => {
+    if (propSlides.length > 0) {
+      setSlides(propSlides);
+      console.log(propSlides);
+    }
+  }, [propSlides]);
 
   if (loading) {
     return (
