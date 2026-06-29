@@ -1,4 +1,3 @@
-import Header from "../components/custom/Header";
 import ProjectContent from "../components/custom/ProjectContent";
 import { GeminiAIModel } from "./../../config/FirebaseConfig";
 import { useParams } from "react-router-dom";
@@ -69,7 +68,6 @@ const Project = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-black">
-      <Header />
       <main className="flex-1 w-full mx-auto md:px-25 px-8 py-8 flex flex-col">
         <ProjectContent loading={loading} />
       </main>

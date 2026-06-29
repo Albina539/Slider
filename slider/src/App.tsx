@@ -9,6 +9,7 @@ import SignUp from "./components/custom/auth/SignUp";
 import SignIn from "./components/custom/auth/SignIn";
 import Project from "./pages/Project";
 import Pitch from "./pages/Pitch";
+import SlideContentPage from "./pages/SlideContentPage";
 
 function App() {
   const [userDetail, setUserDetail] = useState(null);
@@ -23,12 +24,16 @@ function App() {
             <Route path="/login" element={<SignIn />} />
             <Route path="/workspace" element={<WorkspacePage />}>
               <Route
+                path="project/:projectId/content"
+                element={<SlideContentPage />}
+              />
+              <Route
                 path="project/:projectId/outline"
                 element={<ProjectOutline />}
               />
               <Route path="project/:projectId/finish" element={<Project />} />
+              <Route path="project/:projectId/pitch" element={<Pitch />} />
             </Route>
-            <Route path="/pitch" element={<Pitch />} />
           </Routes>
         </UserDetailContext.Provider>
       </BrowserRouter>

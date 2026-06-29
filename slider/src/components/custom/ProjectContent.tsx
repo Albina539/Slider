@@ -1,5 +1,3 @@
-import { useState } from "react";
-import SlideGrid from "./SlideGrid";
 import RightContent from "./RightContent";
 import ProjectActions from "./ProjectActions";
 import stars from "../../assets/background-stars.svg";
@@ -10,16 +8,6 @@ type Props = {
 };
 
 const ProjectContent = ({ loading }: Props) => {
-  const [slides] = useState([
-    { id: 1, title: "Введение", text: "Сгенерированный текст для слайда 1" },
-    {
-      id: 2,
-      title: "Основная часть",
-      text: "Сгенерированный текст для слайда 2",
-    },
-    { id: 3, title: "Заключение", text: "Сгенерированный текст для слайда 3" },
-  ]);
-
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center text-center mb-12 md:my-25 my-15">
@@ -43,18 +31,7 @@ const ProjectContent = ({ loading }: Props) => {
         <div className="flex max-lg:flex-col-reverse w-full max-w-6xl mx-auto gap-8">
           <div className="flex-1">
             {[1, 2, 3, 4].map((item) => (
-              <Skeleton
-                key={item}
-                className="h-[60px] w-full rounded-2xl mb-4"
-              />
-            ))}
-          </div>
-          <div className="flex-1">
-            {[1, 2, 3, 4].map((item) => (
-              <Skeleton
-                key={item}
-                className="h-[60px] w-full rounded-2xl mb-4"
-              />
+              <Skeleton key={item} className="h-15 w-full rounded-2xl mb-4" />
             ))}
           </div>
         </div>
@@ -87,10 +64,7 @@ const ProjectContent = ({ loading }: Props) => {
 
       <div className="flex max-lg:flex-col-reverse w-full max-w-6xl mx-auto gap-8">
         <div className="flex-1">
-          <SlideGrid slides={slides} />
-        </div>
-        <div className="flex-1">
-          <RightContent slides={slides} />
+          <RightContent />
         </div>
       </div>
 

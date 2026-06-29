@@ -4,7 +4,6 @@ import { FileText } from "pixelarticons/react";
 import { useNavigate } from "react-router-dom";
 
 const MyProjects = () => {
-
   const navigate = useNavigate();
   const mockProjects = [
     { id: 1, title: "AI Agent", slides: 5, createdAt: "2 дня назад" },
@@ -12,8 +11,8 @@ const MyProjects = () => {
     { id: 3, title: "AI Agent", slides: 5, createdAt: "2 дня назад" },
   ];
 
-  const handleProjectClick = (projectId: string) => {
-    console.log('Navigating to project:', projectId);
+  const handleProjectClick = (projectId: number) => {
+    console.log("Navigating to project:", projectId);
     navigate(`/project/${projectId}`);
   };
 
@@ -29,8 +28,11 @@ const MyProjects = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {mockProjects.map((project) => (
-          <Card key={project.id} className="bg-white cursor-pointer"
-          onClick={() => handleProjectClick(project.id)}>
+          <Card
+            key={project.id}
+            className="bg-white cursor-pointer"
+            onClick={() => handleProjectClick(project.id)}
+          >
             <CardContent className="px-4">
               <div className="mb-3 text-orange-500">
                 <FileText style={{ width: "56px", height: "56px" }} />

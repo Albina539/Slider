@@ -18,10 +18,12 @@ import {
 import { useState, useEffect } from "react";
 import { v4 as uuid4 } from "uuid";
 import { useNavigate } from "react-router-dom";
-import { doc, setDoc } from "firebase/firestore";
-import { firebaseDb } from "./../../../config/FirebaseConfig";
-import { auth } from "./../../../config/FirebaseConfig"
+import { doc, setDoc, updateDoc } from "firebase/firestore";
+import { firebaseDb, GeminiAIModel } from "./../../../config/FirebaseConfig";
+import { auth } from "./../../../config/FirebaseConfig";
 import { onAuthStateChanged } from "firebase/auth";
+import { CONTENT_PROMPT } from "../../prompts";
+import type { Presentation } from "../../types";
 
 const PromptBox = () => {
   const [text, setText] = useState<string>("");
@@ -37,19 +39,57 @@ const PromptBox = () => {
     return () => unsubscribe();
   }, []);
 
-  const createAndSaveProject = async() => {
-    const projectId = uuid4();
+  const generateContent = async (prompt: string, slidesCount: string) => {
+    const fullPrompt = CONTENT_PROMPT.replace("{userInput}", prompt).replace(
+      "{userSlides}",
+      slidesCount,
+    );
+
+    console.log(fullPrompt);
+
+    const result = await GeminiAIModel.generateContent(fullPrompt);
+    const response = result.response;
+    const text = response.text();
+
+    console.log("Gemini: ", text);
+
+    const cleanText = text
+      .replace(/```json/g, "")
+      .replace(/```/g, "")
+      .trim();
+
+    const JSONData = JSON.parse(cleanText);
+    return JSONData;
+  };
+
+  const createAndSaveProject = async () => {
     setLoading(true);
-    await setDoc(doc(firebaseDb, 'projects', projectId), {
+    try {
+      const projectId = uuid4();
+
+      const projectData = {
         projectId: projectId,
         userInputPrompt: text,
         userSlides: slides,
         createdBy: user?.displayName || user?.email || "Anonymous",
-        createdAt: new Date()
-    })
-    console.log("Проект успешно сохранен!")
-    setLoading(false);
-    navigate("/workspace/project/" + projectId + "/outline");
+        content: null,
+        createdAt: new Date(),
+      };
+      const docRef = doc(firebaseDb, "projects", projectId);
+      await setDoc(docRef, projectData);
+      console.log("Проект успешно сохранен!");
+      const presentation: Presentation = await generateContent(text, slides);
+
+      await updateDoc(docRef, {
+        content: presentation.slides,
+        presentationTitle: presentation.presentationTitle,
+      });
+      navigate("/workspace/project/" + projectId + "/content");
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
   };
   return (
     <div className="flex flex-col items-center justify-center text-center mb-12 md:my-25 my-15">
