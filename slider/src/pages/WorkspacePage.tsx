@@ -69,6 +69,7 @@ const WorkspacePage = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-black">
+      <Header />
       {location.pathname === "/workspace" && (
         <main className="flex-1 w-full mx-auto md:px-25 px-8 py-8">
           <PromptBox />
