@@ -1,4 +1,3 @@
-import Header from "../components/custom/Header";
 import ProjectContent from "../components/custom/ProjectContent";
 import { GeminiAIModel } from "./../../config/FirebaseConfig";
 import { useParams } from "react-router-dom";

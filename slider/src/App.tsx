@@ -9,7 +9,7 @@ import SignUp from "./components/custom/auth/SignUp";
 import SignIn from "./components/custom/auth/SignIn";
 import Project from "./pages/Project";
 import Pitch from "./pages/Pitch";
-import SlideContent from "./pages/SlideContent";
+import SlideContentPage from "./pages/SlideContentPage";
 
 function App() {
   const [userDetail, setUserDetail] = useState(null);
@@ -25,7 +25,7 @@ function App() {
             <Route path="/workspace" element={<WorkspacePage />}>
               <Route
                 path="project/:projectId/content"
-                element={<SlideContent />}
+                element={<SlideContentPage />}
               />
               <Route
                 path="project/:projectId/outline"

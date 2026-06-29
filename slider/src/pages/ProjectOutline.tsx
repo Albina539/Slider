@@ -14,10 +14,10 @@ import FontStyle from "../components/custom/FontStyle";
 import FormFooter from "../components/custom/FormFooter";
 import SlidersStyle from "../components/custom/SlidersStyle";
 import type { FontStyleType, SlidersStyleType } from "../types";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const ProjectOutline = () => {
-  // const { projectId } = useParams();
+  const { projectId } = useParams();
   // const [projectDetail, setProjectDetail] = useState<Project>();
   // const GetProjectDetail = () => {
   //   console.log(projectId);
@@ -30,7 +30,7 @@ const ProjectOutline = () => {
 
   const GenerateSlides = () => {
     console.log(style, colorPrimary, colorSecondary, font);
-    navigate("/project");
+    navigate("/workspace/project/" + projectId + "/finish");
   };
   return (
     <div className="min-h-screen flex flex-col bg-black">
