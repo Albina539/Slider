@@ -32,9 +32,13 @@ const Project = () => {
       const docSnap = await getDoc(docRef);
 
       const data = docSnap.data();
-
       setProjectDetail(data);
       setContent(data.content || []);
+
+      if (data.htmlPresentation) {
+        setHtmlPresentation(data.htmlPresentation);
+        return;
+      }
 
       const presentationData = {
           presentationTitle: data.userInputPrompt || "Презентация",
@@ -198,8 +202,7 @@ const Project = () => {
 
       const fileName = `${projectDetail?.userInputPrompt || 'presentation'}.pptx`;
       pres.writeFile({ fileName });
-  }
-};
+  };
 
   return (
     <div className="min-h-screen bg-white">
