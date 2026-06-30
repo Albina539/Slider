@@ -15,6 +15,8 @@ import FormFooter from "../components/custom/FormFooter";
 import SlidersStyle from "../components/custom/SlidersStyle";
 import type { FontStyleType, SlidersStyleType } from "../types";
 import { useNavigate, useParams } from "react-router-dom";
+import { firebaseDb } from "./../../config/FirebaseConfig";
+import { doc, updateDoc } from "firebase/firestore";
 
 const ProjectOutline = () => {
   const { projectId } = useParams();
@@ -28,10 +30,18 @@ const ProjectOutline = () => {
   const [font, setFont] = useState<FontStyleType>("TimesNewRoman");
   const navigate = useNavigate();
 
-  const GenerateSlides = () => {
-    console.log(style, colorPrimary, colorSecondary, font);
+  const GenerateSlides = async () => {
+
+    const docRef = doc(firebaseDb, "projects", projectId);
+    await updateDoc(docRef, {
+      designStyle: style,
+      font: font,
+      colorPrimary: colorPrimary,
+      colorSecondary: colorSecondary,
+    });
+
     navigate("/workspace/project/" + projectId + "/finish");
-  };
+};
   return (
     <div className="min-h-screen flex flex-col bg-black">
       <main className="flex-1 w-full mx-auto md:px-15 lg:px-25 px-8 py-8">
