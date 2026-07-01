@@ -3,12 +3,23 @@ import stars from "../../assets/background-stars.svg";
 import logo from "../../assets/logo.svg";
 import { Textarea } from "../ui/textarea";
 
-type Props = {
+interface PitchContentProps {
   speech: string;
   loading: boolean;
-};
+}
 
-const PitchContent = ({ speech, loading }: Props) => {
+const PitchContent = ({ speech, loading }: PitchContentProps) => {
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-[60vh]">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-16 w-16 border-4 border-slider-green border-t-transparent mx-auto mb-4"></div>
+          <p className="text-white text-xl">Генерация текста выступления...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-col items-center justify-center text-center mb-12 md:my-25 my-15">
       <div className="relative w-full md:mb-30 mb-15">

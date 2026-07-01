@@ -1,67 +1,92 @@
 import PitchContent from "../components/custom/PitchContent";
 import { useParams } from "react-router-dom";
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { firebaseDb } from "./../../config/FirebaseConfig";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { GeminiAIModel } from "./../../config/FirebaseConfig";
-import { SPEECH_PROMPT } from "../prompts"
+import { SPEECH_PROMPT } from "../prompts";
 
 const Pitch = () => {
   const { projectId } = useParams();
   const [speech, setSpeech] = useState<string>("");
   const [loading, setLoading] = useState(false);
-  const [content, setContent] = useState<any[]>([]);
+
+  const formatContent = (slide: any) => {
+    if (Array.isArray(slide.content)) {
+      return slide.content.join("\n");
+    }
+    if (typeof slide.content === "string") {
+      return slide.content;
+    }
+    if (slide.outline) {
+      return slide.outline;
+    }
+    return "";
+  };
 
   useEffect(() => {
-    if (projectId) loadProjectData();
-  }, [projectId]);
-
-  const loadProjectData = async () => {
-
+    const generateSpeech = async () => {
+      if (!projectId) return;
       setLoading(true);
 
-      const docRef = doc(firebaseDb, "projects", projectId!);
-      const docSnap = await getDoc(docRef);
+      try {
+        const docRef = doc(firebaseDb, "projects", projectId);
+        const docSnap = await getDoc(docRef);
 
-      if (!docSnap.exists()) return;
+        if (!docSnap.exists()) {
+          setLoading(false);
+          return;
+        }
 
-      const data = docSnap.data();
-      setContent(data.content || []);
+        const data = docSnap.data();
 
-      if (data.speech) {
-        setSpeech(data.speech);
-      } else if (data.content && data.content.length > 0) {
-        generateSpeech(data.content);
+        if (data.speech) {
+          setSpeech(data.speech);
+          setLoading(false);
+          return;
+        }
+
+        const contentData = data.content || [];
+        if (contentData.length === 0) {
+          setLoading(false);
+          return;
+        }
+
+        const presentationContent = contentData
+          .map((slide: any, i: number) => {
+            const contentText = formatContent(slide);
+
+            return `Слайд ${slide.slideNo || i + 1}: "${slide.slideTitle || slide.slidePoint}"
+                    Цель: ${slide.objective || "Не указана"}
+                    Содержание: ${contentText}`;
+          })
+          .join("\n\n");
+
+        const style = data.designStyle || "Professional";
+
+        let prompt = SPEECH_PROMPT;
+        prompt = prompt.replace("{PRESENTATION_CONTENT}", presentationContent);
+        prompt = prompt.replace("{STYLE}", style);
+
+        console.log("Промпт для Gemini:", prompt);
+
+        const result = await GeminiAIModel.generateContent(prompt);
+        const generatedSpeech = result.response.text();
+
+        setSpeech(generatedSpeech);
+
+        await updateDoc(docRef, {
+          speech: generatedSpeech,
+        });
+      } catch (error) {
+        console.error("Ошибка при генерации речи:", error);
+      } finally {
+        setLoading(false);
       }
+    };
 
-      setLoading(false);
-
-  };
-
-  const generateSpeech = async (contentData: any[]) => {
-
-      setLoading(true);
-      const presentationContent = contentData.map((slide, i) =>
-        `Слайд ${slide.slideNo || i+1}: "${slide.slideTitle || slide.slidePoint}"
-         Цель: ${slide.objective || "Не указана"}
-         Содержание: ${slide.content ? slide.content.join("\n") : ""}`
-      ).join("\n\n");
-
-      let prompt = SPEECH_PROMPT;
-      prompt = prompt.replace("{PRESENTATION_CONTENT}", presentationContent);
-      console.log(prompt);
-
-      const result = await GeminiAIModel.generateContent(prompt);
-      const generatedSpeech = result.response.text();
-
-      setSpeech(generatedSpeech);
-
-      await updateDoc(doc(firebaseDb, "projects", projectId!), {
-        speech: generatedSpeech
-      });
-
-      setLoading(false);
-  };
+    generateSpeech();
+  }, [projectId]);
 
   return (
     <div className="min-h-screen flex flex-col bg-black">

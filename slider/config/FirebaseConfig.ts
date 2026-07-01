@@ -34,7 +34,7 @@ export const firebaseDb = getFirestore(app);
 const ai = getAI(app, { backend: new GoogleAIBackend() });
 // Create a GenerativeModel instance with a model that supports your use case
 export const GeminiAIModel = getGenerativeModel(ai, {
-  model: "gemini-3.5-flash",
+  model: "gemini-2.5-flash",
 });
 export const GeminiAILiveModel = getLiveGenerativeModel(ai, {
   model: "gemini-2.5-flash",
