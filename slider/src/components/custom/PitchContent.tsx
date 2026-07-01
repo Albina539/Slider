@@ -1,9 +1,14 @@
-import stars from "../../assets/background-stars.svg";
 import PitchActions from "./PitchActions";
+import stars from "../../assets/background-stars.svg";
 import logo from "../../assets/logo.svg";
 import { Textarea } from "../ui/textarea";
 
-const PitchContent = () => {
+type Props = {
+  speech: string;
+  loading: boolean;
+};
+
+const PitchContent = ({ speech, loading }: Props) => {
   return (
     <div className="flex flex-col items-center justify-center text-center mb-12 md:my-25 my-15">
       <div className="relative w-full md:mb-30 mb-15">
@@ -26,8 +31,9 @@ const PitchContent = () => {
 
       <div className="w-full max-w-4xl mx-auto">
         <Textarea
-          className="w-full min-h-75 bg-white p-6 md:p-8 text-black text-base md:text-lg leading-relaxed resize-none focus:outline-none! focus:ring-2! focus:ring-slider-green!"
+          className="w-full min-h-96 bg-white p-6 md:p-8 text-black text-base md:text-lg leading-relaxed resize-none focus:outline-none focus:ring-2 focus:ring-slider-green"
           placeholder="Текст для вашего выступления..."
+          value={speech}
           readOnly
         />
       </div>
